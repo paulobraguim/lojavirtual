@@ -54,7 +54,7 @@
                                         </td>
 
                                         <td class="product-name">
-                                            <a href="/products/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a> 
+                                            <a href="/product/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a> 
                                         </td>
 
                                         <td class="product-price">
@@ -82,12 +82,12 @@
 
                                 <div class="cross-sells">
 
-                                    <h2>Cálculo de Frete</h2>
+                                    <h2>Calculo de Frete</h2>
                                     
                                     <div class="coupon">
                                         <label for="cep">CEP:</label>
                                         <input type="text" placeholder="00000-000" value="<?php echo htmlspecialchars( $cart["deszipcode"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" id="cep" class="input-text" name="zipcode">
-                                        <input type="submit" formmethod="post" formaction="/cart/freight" value="CÁLCULAR" class="button">
+                                        <input type="submit" formmethod="post" formaction="/cart/freight" value="CALCULAR" class="button">
                                     </div>
 
                                 </div>
@@ -105,7 +105,7 @@
 
                                             <tr class="shipping">
                                                 <th>Frete</th>
-                                                <td>R$<?php echo formatPrice($cart["vlfreight"]); ?> <?php if( $cart["nrdays"] > 0 ){ ?> <small>prazo de <?php echo htmlspecialchars( $cart["nrdays"], ENT_COMPAT, 'UTF-8', FALSE ); ?> dia(s)</small><?php } ?></td>
+                                                <td>R$<?php echo formatPrice($cart["vlfreight"]); ?><?php if( $cart["nrdays"] > 0 ){ ?> <small>prazo de <?php echo htmlspecialchars( $cart["nrdays"], ENT_COMPAT, 'UTF-8', FALSE ); ?> dia(s)</small><?php } ?></td>
                                             </tr>
 
                                             <tr class="order-total">
