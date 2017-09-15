@@ -225,7 +225,7 @@ class Cart extends Model {
 
 			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
 
-			$result = $xml->Servicos->cServico;
+			$result = $xml->Servicos->cServico;			
 
 			if ($result->MsgErro != '') {
 
@@ -240,14 +240,13 @@ class Cart extends Model {
 			$this->setnrdays($result->PrazoEntrega);
 			$this->setvlfreight(Cart::formatValueToDecimal($result->Valor));
 			$this->setdeszipcode($nrzipcode);
-
+			
 			$this->save();
 
 			return $result;
 
 		} else {
-
-
+			
 
 		}
 
