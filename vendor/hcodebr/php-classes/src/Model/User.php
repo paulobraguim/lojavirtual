@@ -330,7 +330,7 @@ class User extends Model {
 			':deslogin'=>$login
 		]);
 
-		return (count($results) > 0);
+		return (count($results));
 	}
 	
 	public static function getPasswordHash($password)
@@ -339,4 +339,6 @@ class User extends Model {
 			'cost'=>12
 		]);
 	}
+
+
 }	
