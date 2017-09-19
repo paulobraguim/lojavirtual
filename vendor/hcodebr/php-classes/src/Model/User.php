@@ -343,5 +343,4 @@ class User extends Model {
 		]);
 	}
 
-
 }	
