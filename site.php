@@ -321,18 +321,18 @@ $app->post("/profile", function(){
 	User::verifyLogin(false);
 
 	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
-		
+
 		User::setError("Preencha o seu nome.");
 
-		header("Location: /profile");
+		header('Location: /profile');
 		exit;
 	}
 
 	if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
-		
-		User::setError("Preencha o seu E-mail.");
 
-		header("Location: /profile");
+		User::setError("Preencha o seu e-mail.");
+
+		header('Location: /profile');
 		exit;
 	}
 
@@ -340,11 +340,11 @@ $app->post("/profile", function(){
 
 	if ($_POST['desemail'] !== $user->getdesemail()) {
 
-		if(User::checkLoginExist($_POST['desemail']) > 0) {
+		if (User::checkLoginExists($_POST['desemail']) > 0) {
 
-			User::setError("Este endereço de email já está sendo utilizado.");
+			User::setError("Este endereço de e-mail já está cadastrado.");
 
-			header("Location: /profile");
+			header('Location: /profile');
 			exit;
 		}
 	}
@@ -353,16 +353,15 @@ $app->post("/profile", function(){
 	$_POST['despassword'] = $user->getdespassword();
 	$_POST['deslogin'] = $_POST['desemail'];
 
-
 	$user->setData($_POST);
 
-	$user->save();
+	$user->update();
 
 	User::setSuccess("Dados alterados com sucesso!");
 
-	header("Location: /profile");
+	header('Location: /profile');
 	exit;
-
+	
 });
 
 ?>
