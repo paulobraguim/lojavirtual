@@ -53,7 +53,7 @@ class Address extends Model {
 			':descomplement'=>utf8_decode($this->getdescomplement()),
 			':descity'=>utf8_decode($this->getdescity()),
 			':desstate'=>utf8_decode($this->getdesstate()),
-			':descountry'=>utf8_decode($this->getdescountry(),
+			':descountry'=>utf8_decode($this->getdescountry()),
 			':deszipcode'=>$this->getdeszipcode(),
 			':desdistrict'=>$this->getdesdistrict()
 		]);
