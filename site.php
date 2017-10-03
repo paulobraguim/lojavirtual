@@ -146,7 +146,7 @@ $app->get("/checkout", function(){
 	
 	$cart = Cart::getFromSession();
 
-	if (isset($_GET['zipcode'])) {
+	if (!isset($_GET['zipcode'])) {
 
 		$_GET['zipcode'] = $cart->getdeszipcode();
 	}
@@ -178,8 +178,7 @@ $app->get("/checkout", function(){
 });
 
 $app->post("/checkout", function(){
-
-	User::verifyLogin(false);
+	
 
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 
@@ -248,8 +247,8 @@ $app->post("/checkout", function(){
 	$order = new Order();
 
 	$order->setData([
-		'idcart'=>$cart->getidcart(),
-		'idaddress'=>$address->getidaddress(),
+		'idcart'=>$cart->getidcart(),		
+		'idaddress'=>$address->getidaddress(),		
 		'iduser'=>$user->getiduser(),
 		'idstatus'=>OrderStatus::EM_ABERTO,
 		'vltotal'=>$cart->getvltotal()
@@ -500,9 +499,12 @@ $app->get("/boleto/:idorder", function($idorder){
 	$dias_de_prazo_para_pagamento = 10;
 	$taxa_boleto = 5.00;
 	$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006"; 
+
 	$valor_cobrado = formatPrice($order->getvltotal()); // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
+
+	$valor_cobrado = str_replace(".", "", $valor_cobrado);
 	$valor_cobrado = str_replace(",", ".",$valor_cobrado);
-	$valor_boleto=number_format($valor_cobrado+$taxa_boleto, 2, ',', '');
+	$valor_boleto= number_format($valor_cobrado+$taxa_boleto, 2, ',', '');
 
 	$dadosboleto["nosso_numero"] = $order->getidorder();  // Nosso numero - REGRA: Máximo de 8 caracteres!
 	$dadosboleto["numero_documento"] = $order->getidorder();	// Num do pedido ou nosso numero
@@ -514,7 +516,7 @@ $app->get("/boleto/:idorder", function($idorder){
 	// DADOS DO SEU CLIENTE
 	$dadosboleto["sacado"] = $order->getdesperson();
 	$dadosboleto["endereco1"] = $order->getdesaddress() . " " . $order->getdesdistrict();
-	$dadosboleto["endereco2"] = $order->getdescity() . " - " . $order->getdesstate() . " - " . $order->getdescountry() . " - CEP: " .$order->getdeszipcode();
+	$dadosboleto["endereco2"] = $order->getdescity() . " - " . $order->getdesstate() . " - " . $order->getdescountry() . " -  CEP: " . $order->getdeszipcode();
 
 	// INFORMACOES PARA O CLIENTE
 	$dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja Hcode E-commerce";
@@ -532,15 +534,11 @@ $app->get("/boleto/:idorder", function($idorder){
 	$dadosboleto["especie"] = "R$";
 	$dadosboleto["especie_doc"] = "";
 
-
 	// ---------------------- DADOS FIXOS DE CONFIGURAÇÃO DO SEU BOLETO --------------- //
-
-
 	// DADOS DA SUA CONTA - ITAÚ
 	$dadosboleto["agencia"] = "1690"; // Num da agencia, sem digito
 	$dadosboleto["conta"] = "48781";	// Num da conta, sem digito
 	$dadosboleto["conta_dv"] = "2"; 	// Digito do Num da conta
-
 	// DADOS PERSONALIZADOS - ITAÚ
 	$dadosboleto["carteira"] = "175";  // Código da Carteira: pode ser 175, 174, 104, 109, 178, ou 157
 
@@ -553,9 +551,10 @@ $app->get("/boleto/:idorder", function($idorder){
 
 	// NÃO ALTERAR!
 	$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "boletophp" . DIRECTORY_SEPARATOR . "include" . DIRECTORY_SEPARATOR;
-
+	
 	require_once($path . "funcoes_itau.php");
 	require_once($path . "layout_itau.php");
+
 
 });
 
