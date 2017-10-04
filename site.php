@@ -146,7 +146,7 @@ $app->get("/checkout", function(){
 	
 	$cart = Cart::getFromSession();
 
-	if (!isset($_GET['zipcode'])) {
+	if (isset($_GET['zipcode'])) {
 
 		$_GET['zipcode'] = $cart->getdeszipcode();
 	}
@@ -239,7 +239,7 @@ $app->post("/checkout", function(){
 	$address->setData($_POST);
 
 	$address->save();
-
+	
 	$cart = Cart::getFromSession();
 
 	$totals = $cart->getCalculateTotal();
